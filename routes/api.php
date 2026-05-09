@@ -8,6 +8,23 @@ use App\Http\Controllers\API\InspeccionController;
 use App\Http\Controllers\API\DistritoController;
 use App\Http\Controllers\API\EvidenciaController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// ── Auth ──
+Route::post('/login',  [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me',      [AuthController::class, 'me']);
+
+    // ── Distritos ──
+    Route::apiResource('distritos', DistritoController::class);
+
+    // ── Construcciones ──
+    Route::apiResource('construcciones', ConstruccionController::class);
+
+    // ── Inspecciones ──
+    Route::apiResource('inspecciones', InspeccionController::class);
+
+    // ── Evidencias ──
+    Route::apiResource('evidencias', EvidenciaController::class);
+});
