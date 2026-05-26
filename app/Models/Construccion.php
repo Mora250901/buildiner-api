@@ -42,11 +42,11 @@ class Construccion extends Model
 
     public function inspecciones()
     {
-        return $this->hasMany(Inspeccion::class);
+        return $this->hasMany(Inspeccion::class, 'construccion_id');
     }
 
     public function ultimaInspeccion()
     {
-        return $this->hasOne(Inspeccion::class)->latestOfMany();
+        return $this->hasOne(Inspeccion::class, 'construccion_id')->latestOfMany();
     }
 }

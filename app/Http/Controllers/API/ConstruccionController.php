@@ -49,18 +49,34 @@ class ConstruccionController extends Controller
 
         $construccion = Construccion::create($request->all());
 
-        return response()->json($construccion->load('distrito'), 201);
-    }
-
-    public function show(Construccion $construccion)
-    {
         return response()->json(
-            $construccion->load(['distrito', 'inspecciones.evidencias', 'inspecciones.inspector'])
+            Construccion::with('distrito')->find($construccion->id), 201
         );
     }
 
-    public function update(Request $request, Construccion $construccion)
+    public function show($id)
     {
+        $construccion = Construccion::with([
+            'distrito',
+            'inspecciones.evidencias',
+            'inspecciones.inspector'
+        ])->find($id);
+
+        if (!$construccion) {
+            return response()->json(['message' => 'No encontrado.'], 404);
+        }
+
+        return response()->json($construccion);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $construccion = Construccion::find($id);
+
+        if (!$construccion) {
+            return response()->json(['message' => 'No encontrado.'], 404);
+        }
+
         $request->validate([
             'distrito_id'           => 'sometimes|exists:distritos,id',
             'direccion'             => 'sometimes|string|max:500',
@@ -80,11 +96,19 @@ class ConstruccionController extends Controller
 
         $construccion->update($request->all());
 
-        return response()->json($construccion->load('distrito'));
+        return response()->json(
+            Construccion::with('distrito')->find($id)
+        );
     }
 
-    public function destroy(Construccion $construccion)
+    public function destroy($id)
     {
+        $construccion = Construccion::find($id);
+
+        if (!$construccion) {
+            return response()->json(['message' => 'No encontrado.'], 404);
+        }
+
         $construccion->update(['activo' => false]);
         return response()->json(['message' => 'Construcción desactivada correctamente.']);
     }
