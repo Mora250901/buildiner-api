@@ -7,6 +7,7 @@ use App\Http\Controllers\API\ConstruccionController;
 use App\Http\Controllers\API\InspeccionController;
 use App\Http\Controllers\API\DistritoController;
 use App\Http\Controllers\API\EvidenciaController;
+use App\Http\Controllers\API\UsuarioController;
 
 // ── Auth ──
 Route::post('/login',  [AuthController::class, 'login']);
@@ -15,6 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me',      [AuthController::class, 'me']);
+    Route::get('usuarios', [UsuarioController::class, 'index']);
 
     // ── Distritos ──
     Route::apiResource('distritos', DistritoController::class);
