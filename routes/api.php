@@ -18,8 +18,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me',      [AuthController::class, 'me']);
     Route::get('usuarios', [UsuarioController::class, 'index']);
 
+    // ── Metricas ──
     Route::get('dashboard/metricas', [App\Http\Controllers\API\DashboardController::class, 'metricas']);
-
 
     // ── Distritos ──
     Route::apiResource('distritos', DistritoController::class);
