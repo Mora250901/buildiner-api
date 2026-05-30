@@ -12,6 +12,7 @@ use App\Http\Controllers\API\SuscripcionController;
 
 // ── Auth ──
 Route::post('/login',  [AuthController::class, 'login']);
+Route::post('/registro', [AuthController::class, 'registro']);
 
 Route::middleware('auth:sanctum')->group(function () {
 

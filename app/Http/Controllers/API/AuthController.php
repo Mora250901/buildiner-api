@@ -37,6 +37,25 @@ class AuthController extends Controller
         ]);
     }
 
+    public function registro(Request $request)
+    {
+        $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $user = User::create([
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'password' => bcrypt($request->password),
+        ]);
+
+        $user->assignRole('suscriptor');
+
+        return response()->json(['message' => 'Cuenta creada correctamente.'], 201);
+    }
+
     public function me(Request $request)
     {
         $user = $request->user();
